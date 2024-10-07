@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Classifier</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/styles.css">
+    <style>
+        * {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: white;
+        }
+
+        body {
+            background-color: #121212;
+        }
+
+        .navbar {
+            background-color: #1f1f1f;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white;
+        }
+
+        .nav-link:hover {
+            color: #cbd5e1;
+        }
+
+        .header {
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #000000, #434343);
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .features, .footer {
+            background-color: #2a2a2a;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+        }
+
+        .btn-light {
+            color: black;
+        }
+
+        .btn-light:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .alert {
+            background-color: #343a40;
+            border-color: #495057;
+        }
+
+        .image-preview {
+            max-height: 300px;
+            max-width: 100%;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+            border: 2px solid white; /* Adding border for elegance */
+            border-radius: 8px;
+        }
+
+        .prediction-result {
+            color: white;
+            background-color: black;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .mb-4 {
+            margin-bottom: 30px; /* Adjusted margin for spacing */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky">
+        <div class="container">
+            <a class="navbar-brand" href="#">Image Classifier</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#header">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#upload">Upload</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#aboutus">About Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="header" id="header">
+        <div class="header-content">
+            <h1 class="display-4">Welcome to Image Classifier</h1>
+            <p class="lead">Classify your images with a single click!</p>
+        </div>
+    </div>
+
+    <div class="container my-5" id="upload">
+        <h2 class="text-center mb-4">Upload an Image</h2>
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <input type="file" name="file" accept="image/*" required class="form-control" id="file-input" onchange="showPreview()">
+            </div>
+            <img id="image-preview" class="image-preview" alt="Image Preview">
+            <div class="mb-4"></div> <!-- Extra space between the image and button -->
+            <button type="submit" class="btn btn-outline-light">Classify Image</button>
+        </form>
+
+        {% if label %}
+        <div class="prediction-result">
+            <strong>Prediction:</strong> {{ label }} <br>
+            <strong>Score:</strong> {{ score | round(2) }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="features text-light my-5">
+        <h2 class="text-center">Features</h2>
+        <p class="text-center">Real-time classification using state-of-the-art AI models.</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Image Classifier, All Rights Reserved.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showPreview() {
+            const fileInput = document.getElementById('file-input');
+            const preview = document.getElementById('image-preview');
+            const file = fileInput.files[0];
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block'; // Show the image preview
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
